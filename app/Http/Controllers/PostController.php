@@ -33,6 +33,11 @@ class PostController extends Controller
     // 作成機能
     public function store(PostRequest $request)
     {
+        $request->validate([
+            'title' => 'max:40',
+            'content' => 'max:200'
+        ]);
+
         $post = new Post();
         $post->title = $request->input('title');
         $post->content = $request->input('content');
@@ -55,6 +60,11 @@ class PostController extends Controller
     // 更新機能
     public function update(PostRequest $request, Post $post)
     {
+        $request->validate([
+            'title' => 'max:40',
+            'content' => 'max:200'
+        ]);
+
         if ($post->user_id !== Auth::id()) {
             return redirect()->route('posts.index')->with('error_message', '不正なアクセスです。');
         }
